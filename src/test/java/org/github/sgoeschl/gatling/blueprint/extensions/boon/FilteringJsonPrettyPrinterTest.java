@@ -8,6 +8,7 @@ import java.util.List;
 
 import static io.advantageous.boon.core.Lists.list;
 import static io.advantageous.boon.core.Maps.map;
+import static org.github.sgoeschl.gatling.blueprint.extensions.boon.FilteringJsonPrettyPrinter.prettyPrint;
 import static org.github.sgoeschl.gatling.blueprint.extensions.boon.FilteringJsonPrettyPrinter.print;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -106,18 +107,18 @@ public class FilteringJsonPrettyPrinterTest {
     @Test
     public void shouldPrettyPrintUnsortedJson() {
         assertEquals(personJsonUnsortedOutput, print(personJson));
-        assertEquals(personJsonUnsortedOutput, print(personJson, false, Collections.<String>emptyList()));
+        assertEquals(personJsonUnsortedOutput, print(personJson, false, Collections.emptyList()));
     }
 
     @Test
     public void shouldPrettyPrintSortedJson() {
         assertEquals(personJsonSortedOutput, print(personJson, true));
-        assertEquals(personJsonSortedOutput, print(personJson, true, Collections.<String>emptyList()));
+        assertEquals(personJsonSortedOutput, print(personJson, true, Collections.emptyList()));
     }
 
     @Test
     public void shouldPrettyPrintJson() {
-        assertTrue(print(departmentJson).contains("id"));
+        assertTrue(prettyPrint(departmentJson).contains("id"));
     }
 
     @Test
