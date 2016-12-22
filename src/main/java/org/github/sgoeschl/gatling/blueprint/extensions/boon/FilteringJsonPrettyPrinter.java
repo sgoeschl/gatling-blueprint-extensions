@@ -22,6 +22,7 @@ import io.advantageous.boon.core.Predicate;
 import io.advantageous.boon.primitive.CharBuf;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,32 +34,20 @@ import java.util.stream.StreamSupport;
 import static java.util.Arrays.asList;
 
 /**
- * Pretty-print a Boon JSON map while filtering and sorting the entries.
+ * Pretty-print a Boon JSON map while filtering keys
  */
 public final class FilteringJsonPrettyPrinter {
 
     public static String prettyPrint(Object object) {
-        return print(object, false);
-    }
-
-    public static String prettyPrint(Object object, boolean sort) {
-        return print(object, sort);
+        return print(object);
     }
 
     public static String print(Object object, String... skippedKeys) {
-        return print(object, false, asList(skippedKeys));
+        return print(object, asList(skippedKeys));
     }
 
     public static String print(Object object, Iterable<String> skippedKeys) {
-        return print(object, false, skippedKeys);
-    }
-
-    public static String print(Object object, boolean sort, String... skippedKeys) {
-        return print(object, sort, asList(skippedKeys));
-    }
-
-    public static String print(Object object, boolean sort, Iterable<String> skippedKeys) {
-        return print(object, sort, new AcceptKeyPredicate(skippedKeys));
+        return print(object, false, new AcceptKeyPredicate(skippedKeys));
     }
 
     /**
@@ -71,7 +60,7 @@ public final class FilteringJsonPrettyPrinter {
      */
     private static String print(Object object, boolean sort, Predicate<String> filter) {
         final ModifyingCharBuf modifyingCharBuf = new ModifyingCharBuf(sort, filter);
-        return modifyingCharBuf.prettyPrintObject(object, sort, 0).toString();
+        return modifyingCharBuf.prettyPrintObject(object, false, 0).toString();
     }
 
     /**
@@ -97,12 +86,39 @@ public final class FilteringJsonPrettyPrinter {
         @SuppressWarnings("unchecked")
         public CharBuf prettyPrintMap(Map source, int indent) {
 
+            final int indentChars = 1;
+
             if (source == null) {
                 return null;
             }
 
             Map map = createMap(source, sort, filter);
-            return super.prettyPrintMap(map, indent);
+
+            final Set set = map.entrySet();
+            final Iterator iterator = set.iterator();
+
+            add("\n");
+            indent(indent * indentChars).add("{\n");
+
+            while (iterator.hasNext()) {
+                Map.Entry entry = (Map.Entry) iterator.next();
+                indent((indent + 1) * indentChars);
+                addJsonEscapedString(entry.getKey().toString().toCharArray());
+                add(": ");
+                Object value = entry.getValue();
+                prettyPrintObject(value, true, indent);
+                add(",\n");
+            }
+
+            if (map.size() > 0) {
+                removeLastChar();
+                removeLastChar();
+                add("\n");
+            }
+
+            indent(indent * indentChars).add('}');
+
+            return this;
         }
 
         private Map createMap(Map<String, Object> map, boolean sort, Predicate<String> predicate) {

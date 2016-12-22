@@ -11,12 +11,12 @@ public final class FileUtil {
 
     private final static String SEPARATOR = "-";
 
-    public static File createFile(File directory, String extension, List<String> nameParts) {
+    public static File createFile(File directory, String extension, List<String> fileNameParts) {
         Validate.notNull(directory, "directory");
-        Validate.notEmpty(nameParts, "nameParts");
+        Validate.notEmpty(fileNameParts, "fileNameParts");
         Validate.notEmpty(extension, "extension");
 
-        final String fileName = createConcatenatedFileName(extension, nameParts);
+        final String fileName = createConcatenatedFileName(extension, fileNameParts);
 
         return new File(directory, fileName);
     }
@@ -33,14 +33,14 @@ public final class FileUtil {
         }
     }
 
-    private static String createConcatenatedFileName(String extension, List<String> nameParts) {
+    private static String createConcatenatedFileName(String extension, List<String> fileNameParts) {
         final StringBuilder stringBuilder = new StringBuilder();
-        nameParts.forEach(namePart -> stringBuilder.append(normalizeNamePart(namePart)).append(SEPARATOR));
+        fileNameParts.forEach(namePart -> stringBuilder.append(normalizeNamePart(namePart)).append(SEPARATOR));
         return stringBuilder.deleteCharAt(stringBuilder.length() - 1).append(".").append(extension).toString();
     }
 
-    private static String normalizeNamePart(String namePart) {
-        return namePart.trim().replace("/", SEPARATOR);
+    private static String normalizeNamePart(String fileNamePart) {
+        return fileNamePart.trim().replace("/", SEPARATOR);
     }
 
     private static void createDirectoryWhenMissing(File file) {

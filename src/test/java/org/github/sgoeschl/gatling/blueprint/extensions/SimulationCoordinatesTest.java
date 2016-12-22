@@ -45,7 +45,7 @@ public class SimulationCoordinatesTest {
 
     @Test
     public void shouldConvertToString() {
-        assertEquals("SimulationCoordinates{application='application', tenant='tenant', site='local', scope='scenario'}",
+        assertEquals("{application='application', tenant='tenant', site='local', scope='scenario'}",
                 from(SIMULATION_CLASS_NAME).toString());
     }
 

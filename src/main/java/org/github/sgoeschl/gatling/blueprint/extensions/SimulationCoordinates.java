@@ -82,7 +82,7 @@ public class SimulationCoordinates {
 
     @Override
     public String toString() {
-        return "SimulationCoordinates{" +
+        return "{" +
                 "application='" + getApplication() + '\'' +
                 ", tenant='" + getTenant() + '\'' +
                 ", site='" + getSite() + '\'' +

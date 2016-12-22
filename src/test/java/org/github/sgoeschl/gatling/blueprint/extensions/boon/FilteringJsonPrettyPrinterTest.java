@@ -20,20 +20,13 @@ public class FilteringJsonPrettyPrinterTest {
             map("id", 2, "salary", 200, "firstName", "John", "lastName", "Smith")
     );
 
-    private static final String personJsonUnsortedOutput = "[        {\n" +
-            "            \"id\" : 2,\n" +
-            "            \"salary\" : 200,\n" +
-            "            \"firstName\" : \"John\",\n" +
-            "            \"lastName\" : \"Smith\"\n" +
-            "        }]";
-
-    private static final String personJsonSortedOutput = "[        {\n" +
-            "            \"firstName\" : \"John\",\n" +
-            "            \"id\" : 2,\n" +
-            "            \"lastName\" : \"Smith\",\n" +
-            "            \"salary\" : 200\n" +
-            "        }]";
-
+    private static final String personJsonUnsortedOutput = "[\n" +
+            "  {\n" +
+            "   \"id\": 2,\n" +
+            "   \"salary\": 200,\n" +
+            "   \"firstName\": \"John\",\n" +
+            "   \"lastName\": \"Smith\"\n" +
+            "  }]";
 
     private static final List<?> departmentJson = list(
             map("name", "Engineering",
@@ -94,26 +87,14 @@ public class FilteringJsonPrettyPrinterTest {
 
     @Test
     @Ignore("Only manual testing")
-    public void shouldPrettyPrintSortedJsonToStdout() {
-        System.out.println(print(departmentJson, true));
-    }
-
-    @Test
-    @Ignore("Only manual testing")
     public void shouldPrettyPrintUnsortedJsonToStdout() {
-        System.out.println(print(departmentJson, false));
+        System.out.println(print(departmentJson));
     }
 
     @Test
     public void shouldPrettyPrintUnsortedJson() {
         assertEquals(personJsonUnsortedOutput, print(personJson));
-        assertEquals(personJsonUnsortedOutput, print(personJson, false, Collections.emptyList()));
-    }
-
-    @Test
-    public void shouldPrettyPrintSortedJson() {
-        assertEquals(personJsonSortedOutput, print(personJson, true));
-        assertEquals(personJsonSortedOutput, print(personJson, true, Collections.emptyList()));
+        assertEquals(personJsonUnsortedOutput, print(personJson, Collections.emptyList()));
     }
 
     @Test
