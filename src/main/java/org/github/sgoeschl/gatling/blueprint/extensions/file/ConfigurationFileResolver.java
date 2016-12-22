@@ -22,6 +22,7 @@ import org.github.sgoeschl.gatling.blueprint.extensions.SimulationCoordinates;
 import java.io.File;
 import java.util.List;
 
+import static java.lang.String.format;
 import static org.github.sgoeschl.gatling.blueprint.extensions.file.HierarchicalFileLocator.locateFile;
 
 /**
@@ -31,7 +32,19 @@ public class ConfigurationFileResolver {
 
     public static File resolveFile(String rootDirectoryName, SimulationCoordinates simulationCoordinates, String configurationFileName) {
         final List<File> configurationFiles = locateFile(rootDirectoryName, simulationCoordinates, configurationFileName);
-        return configurationFiles.isEmpty() ? null : configurationFiles.get(0);
+
+        if (configurationFiles.isEmpty()) {
+            handleNoConfigurationFileFound(rootDirectoryName, simulationCoordinates, configurationFileName);
+        }
+
+        return configurationFiles.get(0);
     }
 
+    private static void handleNoConfigurationFileFound(String rootDirectoryName, SimulationCoordinates simulationCoordinates, String configurationFileName) {
+        throw new IllegalArgumentException(format(
+                "No configuration file found: rootDirectoryName=%s, coordinates=%s, configurationFileName=%s",
+                rootDirectoryName,
+                simulationCoordinates.toScenarioName(),
+                configurationFileName));
+    }
 }

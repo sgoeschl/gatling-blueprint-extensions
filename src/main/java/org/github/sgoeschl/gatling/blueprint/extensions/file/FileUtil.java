@@ -11,9 +11,6 @@ public final class FileUtil {
 
     private final static String SEPARATOR = "-";
 
-    private FileUtil() {
-    }
-
     public static File createFile(File directory, String extension, List<String> nameParts) {
         Validate.notNull(directory, "directory");
         Validate.notEmpty(nameParts, "nameParts");

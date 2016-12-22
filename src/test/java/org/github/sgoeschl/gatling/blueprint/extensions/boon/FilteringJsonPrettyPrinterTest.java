@@ -93,13 +93,13 @@ public class FilteringJsonPrettyPrinterTest {
     }
 
     @Test
-    @Ignore("Manual testing")
+    @Ignore("Only manual testing")
     public void shouldPrettyPrintSortedJsonToStdout() {
         System.out.println(print(departmentJson, true));
     }
 
     @Test
-    @Ignore("Manual testing")
+    @Ignore("Only manual testing")
     public void shouldPrettyPrintUnsortedJsonToStdout() {
         System.out.println(print(departmentJson, false));
     }

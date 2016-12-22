@@ -38,4 +38,16 @@ public class SimulationCoordinatesTest {
         assertEquals(simulationCoordinates, from(SIMULATION_CLASS_NAME, System.getProperties()));
     }
 
+    @Test
+    public void shouldConvertToScenarioName() {
+        assertEquals("application-tenant-local-scenario", from(SIMULATION_CLASS_NAME).toScenarioName());
+    }
+
+    @Test
+    public void shouldConvertToString() {
+        assertEquals("SimulationCoordinates{application='application', tenant='tenant', site='local', scope='scenario'}",
+                from(SIMULATION_CLASS_NAME).toString());
+    }
+
+
 }

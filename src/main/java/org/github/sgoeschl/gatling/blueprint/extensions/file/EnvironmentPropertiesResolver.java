@@ -18,6 +18,7 @@
 package org.github.sgoeschl.gatling.blueprint.extensions.file;
 
 import org.github.sgoeschl.gatling.blueprint.extensions.SimulationCoordinates;
+import org.github.sgoeschl.gatling.blueprint.extensions.utils.Validate;
 
 import java.io.File;
 import java.util.Properties;
@@ -30,7 +31,7 @@ import java.util.Properties;
  * </ul>
  * <br>
  * This allows to overwrite configured values on an ad-hoc base (user.properties)
- * or permanently, e.g. to provide proxy settings.
+ * or permanently, e.g. to provide machine-specific proxy settings.
  */
 public class EnvironmentPropertiesResolver {
 
@@ -39,6 +40,10 @@ public class EnvironmentPropertiesResolver {
     private static final Properties EMPTY_PROPERTIES = new Properties();
 
     public static Properties resolveProperties(String rootDirectoryName, SimulationCoordinates simulationCoordinates) {
+        Validate.notEmpty(rootDirectoryName, "rootDirectoryName");
+        Validate.isTrue(new File(rootDirectoryName).exists(), "The following directory does not exist: " + rootDirectoryName);
+        Validate.notNull(simulationCoordinates, "simulationCoordinates");
+
         final Properties properties = PropertiesResolver.resolveProperties(rootDirectoryName, simulationCoordinates, "environment.properties");
         properties.putAll(getUserProperties());
         properties.putAll(getUserHomeGatlingProperties());

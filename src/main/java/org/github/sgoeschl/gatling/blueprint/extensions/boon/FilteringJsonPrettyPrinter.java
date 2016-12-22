@@ -21,13 +21,14 @@ import io.advantageous.boon.core.Lists;
 import io.advantageous.boon.core.Predicate;
 import io.advantageous.boon.primitive.CharBuf;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static java.util.Arrays.asList;
 
@@ -35,8 +36,6 @@ import static java.util.Arrays.asList;
  * Pretty-print a Boon JSON map while filtering and sorting the entries.
  */
 public final class FilteringJsonPrettyPrinter {
-
-    private FilteringJsonPrettyPrinter() {}
 
     public static String prettyPrint(Object object) {
         return print(object, false);
@@ -50,11 +49,15 @@ public final class FilteringJsonPrettyPrinter {
         return print(object, false, asList(skippedKeys));
     }
 
+    public static String print(Object object, Iterable<String> skippedKeys) {
+        return print(object, false, skippedKeys);
+    }
+
     public static String print(Object object, boolean sort, String... skippedKeys) {
         return print(object, sort, asList(skippedKeys));
     }
 
-    public static String print(Object object, boolean sort, Collection<String> skippedKeys) {
+    public static String print(Object object, boolean sort, Iterable<String> skippedKeys) {
         return print(object, sort, new AcceptKeyPredicate(skippedKeys));
     }
 
@@ -119,13 +122,18 @@ public final class FilteringJsonPrettyPrinter {
 
         private final Set<String> skippedKeys;
 
-        public AcceptKeyPredicate(Collection<String> skippedKeys) {
-            this.skippedKeys = new HashSet<>(skippedKeys);
+        AcceptKeyPredicate(Iterable<String> skippedKeys) {
+            this.skippedKeys = new HashSet<>(toList(skippedKeys));
         }
 
         @Override
         public boolean test(String input) {
             return input != null && !skippedKeys.contains(input);
+        }
+
+        private static <T> List<T> toList(final Iterable<T> iterable) {
+            return StreamSupport.stream(iterable.spliterator(), false)
+                    .collect(Collectors.toList());
         }
     }
 }

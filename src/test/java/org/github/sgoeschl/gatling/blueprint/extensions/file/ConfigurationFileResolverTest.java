@@ -39,4 +39,10 @@ public class ConfigurationFileResolverTest {
         assertNotNull(file);
         assertTrue(file.getAbsolutePath().endsWith("scope/foo.csv"));
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowIllegalArgumentExceptionIfConfigurationFileIsNotFound() {
+        resolveFile(ROOT_DIRECTORY_NAME, simulationCoordinates, "not-found.csv");
+    }
+
 }

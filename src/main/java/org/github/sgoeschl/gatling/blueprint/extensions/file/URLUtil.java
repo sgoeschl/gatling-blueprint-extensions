@@ -15,9 +15,6 @@ public final class URLUtil {
     private final static String MULTIPLE_ENTRY_SEPARATOR = ",";
     private final static Random RANDOM = new Random(System.currentTimeMillis());
 
-    private URLUtil() {
-    }
-
     public static String getURL(String baseURLs, String relativeUrl) {
         Validate.notEmpty(baseURLs, "baseURLs");
 
