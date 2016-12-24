@@ -17,8 +17,6 @@
 
 package org.github.sgoeschl.gatling.blueprint.extensions.file;
 
-import org.github.sgoeschl.gatling.blueprint.extensions.SimulationCoordinates;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -31,9 +29,9 @@ import static org.github.sgoeschl.gatling.blueprint.extensions.file.Hierarchical
 
 public class PropertiesResolver {
 
-    public static Properties resolveProperties(String rootDirectoryName, SimulationCoordinates simulationCoordinates, String propertyFileName) {
+    public static Properties resolveProperties(File rootDirectory, String[] pathElements, String propertyFileName) {
         final Properties result = new Properties();
-        final List<File> propertyFiles = locateFile(rootDirectoryName, simulationCoordinates, propertyFileName);
+        final List<File> propertyFiles = locateFile(rootDirectory, pathElements, propertyFileName);
         Collections.reverse(propertyFiles);
         propertyFiles.forEach(propertyFile -> result.putAll(load(propertyFile)));
         return result;
@@ -43,9 +41,17 @@ public class PropertiesResolver {
         final Properties properties = new Properties();
         try (InputStream is = new FileInputStream(propertyFile)) {
             properties.load(is);
-            return properties;
+            return trimValues(properties);
         } catch (IOException e) {
             throw new RuntimeException("Unable to load : " + propertyFile, e);
         }
+    }
+
+    private static Properties trimValues(Properties properties) {
+        final Properties result = new Properties();
+        for (String key : properties.stringPropertyNames()) {
+            result.put(key, properties.getProperty(key).trim());
+        }
+        return result;
     }
 }

@@ -20,20 +20,34 @@ package org.github.sgoeschl.gatling.blueprint.extensions.file;
 import org.github.sgoeschl.gatling.blueprint.extensions.SimulationCoordinates;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.Properties;
 
+import static org.github.sgoeschl.gatling.blueprint.extensions.file.PropertiesResolver.resolveProperties;
 import static org.junit.Assert.assertEquals;
 
 public class PropertiesResolverTest {
 
-    private final static String ROOT_DIRECTORY_NAME = "./src/test/files";
+    private final static File ROOT_DIRECTORY = new File("./src/test/files");
 
     private final SimulationCoordinates coordinates = new SimulationCoordinates("application", "tenant", "site", "scope");
 
     @Test
     public void shouldLocateInAscendingOrder() {
-        final Properties properties = PropertiesResolver.resolveProperties(ROOT_DIRECTORY_NAME, coordinates, "environment.properties");
+        final Properties properties = resolve(coordinates, "environment.properties");
 
         assertEquals("scope", properties.getProperty("value"));
     }
+
+    @Test
+    public void shouldTrimPropertyValues() {
+        final Properties properties = resolve(coordinates, "environment.properties");
+
+        assertEquals("value with space", properties.getProperty("value_with_space"));
+    }
+
+    private Properties resolve(SimulationCoordinates coordinates, String fileName) {
+        return resolveProperties(ROOT_DIRECTORY, coordinates.getPathElements(), "environment.properties");
+    }
+
 }

@@ -35,18 +35,18 @@ public class HierarchicalFileLocatorTest {
 
     @Test
     public void shouldLocateExistingFiles() {
-        assertEquals(5, locateFile(ROOT_DIRECTORY, coordinates, "foo.csv").size());
-        assertEquals(1, locateFile(ROOT_DIRECTORY, coordinates, "bar.csv").size());
+        assertEquals(5, locateFile(ROOT_DIRECTORY, coordinates.getPathElements(), "foo.csv").size());
+        assertEquals(1, locateFile(ROOT_DIRECTORY, coordinates.getPathElements(), "bar.csv").size());
     }
 
     @Test
     public void shouldReturnEmptyListForNonExistingFile() {
-        assertTrue(locateFile(ROOT_DIRECTORY, coordinates, "unknown.csv").isEmpty());
+        assertTrue(locateFile(ROOT_DIRECTORY, coordinates.getPathElements(), "unknown.csv").isEmpty());
     }
 
     @Test
     public void shouldLocateInAscendingOrder() {
-        final List<File> files = locateFile(ROOT_DIRECTORY, coordinates, "foo.csv");
+        final List<File> files = locateFile(ROOT_DIRECTORY, coordinates.getPathElements(), "foo.csv");
 
         assertTrue(files.get(0).getAbsolutePath().endsWith("scope/foo.csv"));
         assertTrue(files.get(1).getAbsolutePath().endsWith("application/foo.csv"));

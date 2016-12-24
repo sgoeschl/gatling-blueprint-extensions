@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-package org.github.sgoeschl.gatling.blueprint.extensions.file;
+package org.github.sgoeschl.gatling.blueprint.extensions;
 
-import org.github.sgoeschl.gatling.blueprint.extensions.SimulationCoordinates;
+import org.github.sgoeschl.gatling.blueprint.extensions.file.PropertiesResolver;
 import org.github.sgoeschl.gatling.blueprint.extensions.utils.Validate;
 
 import java.io.File;
@@ -39,12 +39,13 @@ public class EnvironmentPropertiesResolver {
     private static final String GATLING_PROPERTIES = ".gatling.properties";
     private static final Properties EMPTY_PROPERTIES = new Properties();
 
-    public static Properties resolveProperties(String rootDirectoryName, SimulationCoordinates simulationCoordinates) {
-        Validate.notEmpty(rootDirectoryName, "rootDirectoryName");
-        Validate.isTrue(new File(rootDirectoryName).exists(), "The following directory does not exist: " + rootDirectoryName);
+    public static Properties resolveProperties(File rootDirectory, SimulationCoordinates simulationCoordinates) {
+        Validate.notNull(rootDirectory, "rootDirectory");
+        Validate.notNull(rootDirectory.exists(), "rootDirectory does not exist: " + rootDirectory);
         Validate.notNull(simulationCoordinates, "simulationCoordinates");
 
-        final Properties properties = PropertiesResolver.resolveProperties(rootDirectoryName, simulationCoordinates, "environment.properties");
+        String[] pathElements = simulationCoordinates.getPathElements();
+        final Properties properties = PropertiesResolver.resolveProperties(rootDirectory, pathElements, "environment.properties");
         properties.putAll(getUserProperties());
         properties.putAll(getUserHomeGatlingProperties());
         return properties;

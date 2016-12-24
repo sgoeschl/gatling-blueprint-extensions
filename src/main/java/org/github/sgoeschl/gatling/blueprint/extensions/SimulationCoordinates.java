@@ -108,6 +108,10 @@ public class SimulationCoordinates {
         return Objects.hash(application, tenant, site, scope);
     }
 
+    public String[] getPathElements() {
+        return new String[] {tenant, site, application, scope};
+    }
+
     private static SimulationCoordinates from(String simulationClass, Properties properties) {
         final String[] parts = simulationClass.split("\\.");
         final int length = parts.length;

@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-package org.github.sgoeschl.gatling.blueprint.extensions.file;
+package org.github.sgoeschl.gatling.blueprint.extensions;
 
-import org.github.sgoeschl.gatling.blueprint.extensions.SimulationCoordinates;
+import org.github.sgoeschl.gatling.blueprint.extensions.utils.Validate;
 
 import java.io.File;
 import java.util.List;
@@ -26,25 +26,34 @@ import static java.lang.String.format;
 import static org.github.sgoeschl.gatling.blueprint.extensions.file.HierarchicalFileLocator.locateFile;
 
 /**
- * Finds the "most specialized" file, i.e. with the greatest file depth.
+ * Finds the "most specialized" data, i.e. with the greatest file depth assuming
+ * that we don't merge data files.
  */
-public class ConfigurationFileResolver {
+public class DataFileResolver {
 
-    public static File resolveFile(String rootDirectoryName, SimulationCoordinates simulationCoordinates, String configurationFileName) {
-        final List<File> configurationFiles = locateFile(rootDirectoryName, simulationCoordinates, configurationFileName);
+    public static File resolveFile(File rootDirectory, SimulationCoordinates simulationCoordinates, String fileName) {
+        Validate.notNull(rootDirectory, "rootDirectory");
+        Validate.notNull(rootDirectory.exists(), "rootDirectory does not exist: " + rootDirectory);
+        Validate.notNull(simulationCoordinates, "simulationCoordinates");
+        Validate.notEmpty(fileName, "fileName");
+        Validate.isTrue(rootDirectory.exists(), rootDirectory.getAbsolutePath() + " does not exist");
+
+        final String[] pathElements = simulationCoordinates.getPathElements();
+        final List<File> configurationFiles = locateFile(rootDirectory, pathElements, fileName);
 
         if (configurationFiles.isEmpty()) {
-            handleNoConfigurationFileFound(rootDirectoryName, simulationCoordinates, configurationFileName);
+            handleNoConfigurationFileFound(rootDirectory, simulationCoordinates, fileName);
         }
 
         return configurationFiles.get(0);
     }
 
-    private static void handleNoConfigurationFileFound(String rootDirectoryName, SimulationCoordinates simulationCoordinates, String configurationFileName) {
+    private static void handleNoConfigurationFileFound(File rootDirectory, SimulationCoordinates simulationCoordinates, String configurationFileName) {
         throw new IllegalArgumentException(format(
                 "No configuration file found: rootDirectoryName=%s, coordinates=%s, configurationFileName=%s",
-                rootDirectoryName,
+                rootDirectory,
                 simulationCoordinates.toScenarioName(),
                 configurationFileName));
     }
+
 }

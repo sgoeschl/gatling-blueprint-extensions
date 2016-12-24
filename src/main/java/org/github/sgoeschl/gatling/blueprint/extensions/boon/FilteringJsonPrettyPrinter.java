@@ -34,7 +34,10 @@ import java.util.stream.StreamSupport;
 import static java.util.Arrays.asList;
 
 /**
- * Pretty-print a Boon JSON map while filtering keys
+ * Pretty-print a Boon JSON document while skipping user-provided
+ * keys and their content. This is handy when you want to print a
+ * JSON document while skipping changing data such as the timestamps,
+ * or generatedUUIDs.
  */
 public final class FilteringJsonPrettyPrinter {
 
@@ -65,9 +68,9 @@ public final class FilteringJsonPrettyPrinter {
 
     /**
      * Some ugly and intrusive hack using a lot of
-     * internal knowledge to get it working.
+     * internal Boon knowledge to get it working.
      */
-    private static class ModifyingCharBuf extends CharBuf {
+    private static final class ModifyingCharBuf extends CharBuf {
 
         private final boolean sort;
         private final Predicate filter;
