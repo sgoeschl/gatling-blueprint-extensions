@@ -40,11 +40,14 @@ public class EnvironmentPropertiesResolver {
     private static final Properties EMPTY_PROPERTIES = new Properties();
 
     public static Properties resolveProperties(File rootDirectory, SimulationCoordinates simulationCoordinates) {
+        return resolveProperties(rootDirectory, simulationCoordinates.getPathElements());
+    }
+
+    public static Properties resolveProperties(File rootDirectory, String[] pathElements) {
         Validate.notNull(rootDirectory, "rootDirectory");
         Validate.notNull(rootDirectory.exists(), "rootDirectory does not exist: " + rootDirectory);
-        Validate.notNull(simulationCoordinates, "simulationCoordinates");
+        Validate.notNull(pathElements, "pathElements");
 
-        String[] pathElements = simulationCoordinates.getPathElements();
         final Properties properties = PropertiesResolver.resolveProperties(rootDirectory, pathElements, "environment.properties");
         properties.putAll(getUserProperties());
         properties.putAll(getUserHomeGatlingProperties());

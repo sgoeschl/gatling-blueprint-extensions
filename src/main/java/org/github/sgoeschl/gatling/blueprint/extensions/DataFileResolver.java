@@ -23,6 +23,8 @@ import java.io.File;
 import java.util.List;
 
 import static java.lang.String.format;
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.joining;
 import static org.github.sgoeschl.gatling.blueprint.extensions.file.HierarchicalFileLocator.locateFile;
 
 /**
@@ -32,27 +34,31 @@ import static org.github.sgoeschl.gatling.blueprint.extensions.file.Hierarchical
 public class DataFileResolver {
 
     public static File resolveFile(File rootDirectory, SimulationCoordinates simulationCoordinates, String fileName) {
+        return resolveFile(rootDirectory, simulationCoordinates.getPathElements(), fileName);
+    }
+
+    public static File resolveFile(File rootDirectory, String[] pathElements, String fileName) {
         Validate.notNull(rootDirectory, "rootDirectory");
         Validate.notNull(rootDirectory.exists(), "rootDirectory does not exist: " + rootDirectory);
-        Validate.notNull(simulationCoordinates, "simulationCoordinates");
+        Validate.notNull(pathElements, "pathElements");
         Validate.notEmpty(fileName, "fileName");
         Validate.isTrue(rootDirectory.exists(), rootDirectory.getAbsolutePath() + " does not exist");
 
-        final String[] pathElements = simulationCoordinates.getPathElements();
         final List<File> configurationFiles = locateFile(rootDirectory, pathElements, fileName);
 
         if (configurationFiles.isEmpty()) {
-            handleNoConfigurationFileFound(rootDirectory, simulationCoordinates, fileName);
+            handleNoConfigurationFileFound(rootDirectory, pathElements, fileName);
         }
 
         return configurationFiles.get(0);
     }
 
-    private static void handleNoConfigurationFileFound(File rootDirectory, SimulationCoordinates simulationCoordinates, String configurationFileName) {
+    private static void handleNoConfigurationFileFound(File rootDirectory, String[] pathElements, String configurationFileName) {
+        final String path = stream(pathElements).map(String::toString).collect(joining("/"));
         throw new IllegalArgumentException(format(
                 "No configuration file found: rootDirectoryName=%s, coordinates=%s, configurationFileName=%s",
                 rootDirectory,
-                simulationCoordinates.toScenarioName(),
+                path,
                 configurationFileName));
     }
 

@@ -29,11 +29,11 @@ public class DataFileResolverTest {
 
     private final static File ROOT_DIRECTORY = new File("./src/test/files");
 
-    private final SimulationCoordinates simulationCoordinates = new SimulationCoordinates("application", "tenant", "site", "scope");
+    private final String[] pathElements = new String[] {"tenant", "site", "application", "scope"};
 
     @Test
     public void shouldFindConfigurationFile() {
-        final File file = resolveFile(ROOT_DIRECTORY, simulationCoordinates, "foo.csv");
+        final File file = resolveFile(ROOT_DIRECTORY, pathElements, "foo.csv");
 
         assertNotNull(file);
         assertTrue(file.getAbsolutePath().endsWith("scope/foo.csv"));
@@ -41,7 +41,7 @@ public class DataFileResolverTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowIllegalArgumentExceptionIfConfigurationFileIsNotFound() {
-        resolveFile(ROOT_DIRECTORY, simulationCoordinates, "not-found.csv");
+        resolveFile(ROOT_DIRECTORY, pathElements, "not-found.csv");
     }
 
 }

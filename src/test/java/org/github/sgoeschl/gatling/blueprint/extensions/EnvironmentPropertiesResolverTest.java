@@ -29,11 +29,11 @@ public class EnvironmentPropertiesResolverTest {
 
     private final static File ROOT_DIRECTORY = new File("./src/test/files");
 
-    private final SimulationCoordinates coordinates = new SimulationCoordinates("application", "tenant", "site", "scope");
+    private final String[] pathElements = new String[] {"tenant", "site", "application", "scope"};
 
     @Test
     public void shouldLocateInAscendingOrder() {
-        final Properties properties = resolveProperties(ROOT_DIRECTORY, coordinates);
+        final Properties properties = resolveProperties(ROOT_DIRECTORY, pathElements);
 
         assertEquals("scope", properties.getProperty("value"));
     }
