@@ -61,7 +61,10 @@ public final class FileUtil {
 
     private static void createDirectoryWhenMissing(File file) {
         final File directory = file.getParentFile();
-        if (!directory.exists() && !directory.mkdirs()) {
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+        if (!directory.exists()) {
             throw new RuntimeException("Failed to create directory: " + directory);
         }
     }
