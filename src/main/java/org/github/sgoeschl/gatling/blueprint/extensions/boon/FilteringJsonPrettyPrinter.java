@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * <p>
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,15 +19,12 @@ package org.github.sgoeschl.gatling.blueprint.extensions.boon;
 
 import io.advantageous.boon.core.Lists;
 import io.advantageous.boon.core.Predicate;
+import io.advantageous.boon.json.JsonFactory;
+import io.advantageous.boon.json.ObjectMapper;
 import io.advantageous.boon.primitive.CharBuf;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.nio.charset.Charset;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -40,6 +37,10 @@ import static java.util.Arrays.asList;
  * or generatedUUIDs.
  */
 public final class FilteringJsonPrettyPrinter {
+
+    private static final ObjectMapper OBJECT_MAPPER = JsonFactory.create();
+    private static final String EMPTY_JSON_STRING = "[]";
+    private static final Object EMPTY_JSON = OBJECT_MAPPER.fromJson(EMPTY_JSON_STRING);
 
     public static String prettyPrint(Object object) {
         return print(object);
@@ -63,7 +64,27 @@ public final class FilteringJsonPrettyPrinter {
      */
     private static String print(Object object, boolean sort, Predicate<String> filter) {
         final ModifyingCharBuf modifyingCharBuf = new ModifyingCharBuf(sort, filter);
-        return modifyingCharBuf.prettyPrintObject(object, false, 0).toString();
+        return modifyingCharBuf.prettyPrintObject(convertToJson(object), false, 0).toString();
+    }
+
+    private static Object convertToJson(Object object) {
+        if (object == null) {
+            return EMPTY_JSON;
+        } else if (object instanceof byte[]) {
+            return convertToJson((byte[]) object);
+        } else if (object instanceof String) {
+            return convertToJson((String) object);
+        } else {
+            return object;
+        }
+    }
+
+    private static Object convertToJson(byte[] bytes) {
+        return convertToJson(new String(bytes, Charset.forName("UTF-8")));
+    }
+
+    private static Object convertToJson(String value) {
+        return value.trim().isEmpty() ? OBJECT_MAPPER.fromJson(EMPTY_JSON_STRING) : OBJECT_MAPPER.fromJson(value);
     }
 
     /**
@@ -95,7 +116,7 @@ public final class FilteringJsonPrettyPrinter {
                 return null;
             }
 
-            Map map = createMap(source, sort, filter);
+            final Map map = createMap(source, sort, filter);
 
             final Set set = map.entrySet();
             final Iterator iterator = set.iterator();
@@ -104,16 +125,16 @@ public final class FilteringJsonPrettyPrinter {
             indent(indent * indentChars).add("{\n");
 
             while (iterator.hasNext()) {
-                Map.Entry entry = (Map.Entry) iterator.next();
+                final Map.Entry entry = (Map.Entry) iterator.next();
                 indent((indent + 1) * indentChars);
                 addJsonEscapedString(entry.getKey().toString().toCharArray());
                 add(": ");
-                Object value = entry.getValue();
+                final Object value = entry.getValue();
                 prettyPrintObject(value, true, indent);
                 add(",\n");
             }
 
-            if (map.size() > 0) {
+            if (!map.isEmpty()) {
                 removeLastChar();
                 removeLastChar();
                 add("\n");

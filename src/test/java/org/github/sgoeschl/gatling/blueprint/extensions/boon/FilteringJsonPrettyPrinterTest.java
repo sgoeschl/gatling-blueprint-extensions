@@ -10,9 +10,7 @@ import static io.advantageous.boon.core.Lists.list;
 import static io.advantageous.boon.core.Maps.map;
 import static org.github.sgoeschl.gatling.blueprint.extensions.boon.FilteringJsonPrettyPrinter.prettyPrint;
 import static org.github.sgoeschl.gatling.blueprint.extensions.boon.FilteringJsonPrettyPrinter.print;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class FilteringJsonPrettyPrinterTest {
 
@@ -72,17 +70,17 @@ public class FilteringJsonPrettyPrinterTest {
 
     @Test
     public void shouldHandleNullValue() {
-        assertEquals("null", print(null));
+        assertEquals("[]", print(null));
     }
 
     @Test
     public void shouldHandleEmptyStringValue() {
-        assertEquals("\"\"", print(""));
+        assertEquals("[]", print(""));
     }
 
     @Test
     public void shouldHandleSpaceStringValue() {
-        assertEquals("\" \"", print(" "));
+        assertEquals("[]", print(" "));
     }
 
     @Test
@@ -114,6 +112,6 @@ public class FilteringJsonPrettyPrinterTest {
 
     @Test
     public void shouldHandleNullJson() {
-        assertEquals("null", print(null));
+        assertEquals("[]", print(null));
     }
 }

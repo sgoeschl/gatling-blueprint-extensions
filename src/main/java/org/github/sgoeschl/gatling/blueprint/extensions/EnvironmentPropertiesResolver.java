@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * <p>
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -55,13 +55,13 @@ public class EnvironmentPropertiesResolver {
     }
 
     private static Properties getUserProperties() {
-        File file = new File(getUserWorkingDirectory(), USER_PROPERTIES);
+        final File file = new File(getUserWorkingDirectory(), USER_PROPERTIES);
         return file.exists() ? PropertiesResolver.load(file) : EMPTY_PROPERTIES;
     }
 
     private static Properties getUserHomeGatlingProperties() {
         if (getUserHomeDirectory() != null) {
-            File file = new File(getUserHomeDirectory(), GATLING_PROPERTIES);
+            final File file = new File(getUserHomeDirectory(), GATLING_PROPERTIES);
             return file.exists() ? PropertiesResolver.load(file) : EMPTY_PROPERTIES;
         }
         return EMPTY_PROPERTIES;
