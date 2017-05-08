@@ -29,14 +29,14 @@ public class DataFileResolverTest {
 
     private static final File ROOT_DIRECTORY = new File("./src/test/files");
 
-    private final String[] pathElements = new String[]{"tenant", "site", "application", "scope"};
+    private final String[] pathElements = new String[] { "tenant", "site", "application", "scope" };
 
     @Test
     public void shouldFindConfigurationFile() {
         final File file = resolveFile(ROOT_DIRECTORY, pathElements, "foo.csv");
 
         assertNotNull(file);
-        assertTrue(file.getAbsolutePath().endsWith("scope/foo.csv"));
+        assertTrue(file.getAbsolutePath().endsWith(path("scope", "foo.csv")));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -44,4 +44,7 @@ public class DataFileResolverTest {
         resolveFile(ROOT_DIRECTORY, pathElements, "not-found.csv");
     }
 
+    private static String path(String directory, String file) {
+        return directory + File.separator + file;
+    }
 }

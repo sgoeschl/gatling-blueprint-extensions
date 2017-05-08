@@ -4,7 +4,7 @@
 
     <groupId>org.github.sgoeschl.gatling</groupId>
     <artifactId>gatling-blueprint-extensions</artifactId>
-    <version>2.2.3.6</version>
+    <version>2.2.3.7</version>
     <packaging>jar</packaging>
     <name>Gatling Blueprint Extensions</name>
     <description>Useful Gatling functionality for the "gatling-blueprint-project"</description>

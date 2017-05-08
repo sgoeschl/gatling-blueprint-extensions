@@ -30,7 +30,7 @@ public class HierarchicalFileLocatorTest {
 
     private static final File ROOT_DIRECTORY = new File("./src/test/files");
 
-    private final String[] pathElements = new String[]{"tenant", "site", "application", "scope"};
+    private final String[] pathElements = new String[] { "tenant", "site", "application", "scope" };
 
     @Test
     public void shouldLocateExistingFiles() {
@@ -47,12 +47,14 @@ public class HierarchicalFileLocatorTest {
     public void shouldLocateInAscendingOrder() {
         final List<File> files = locateFile(ROOT_DIRECTORY, pathElements, "foo.csv");
 
-        assertTrue(files.get(0).getAbsolutePath().endsWith("scope/foo.csv"));
-        assertTrue(files.get(1).getAbsolutePath().endsWith("application/foo.csv"));
-        assertTrue(files.get(2).getAbsolutePath().endsWith("site/foo.csv"));
-        assertTrue(files.get(3).getAbsolutePath().endsWith("tenant/foo.csv"));
-        assertTrue(files.get(4).getAbsolutePath().contains("files/foo.csv"));
+        assertTrue(files.get(0).getAbsolutePath().endsWith(path("scope", "foo.csv")));
+        assertTrue(files.get(1).getAbsolutePath().endsWith(path("application", "foo.csv")));
+        assertTrue(files.get(2).getAbsolutePath().endsWith(path("site", "foo.csv")));
+        assertTrue(files.get(3).getAbsolutePath().endsWith(path("tenant", "foo.csv")));
+        assertTrue(files.get(4).getAbsolutePath().contains(path("files", "foo.csv")));
     }
 
-
+    private static String path(String directory, String file) {
+        return directory + File.separator + file;
+    }
 }
