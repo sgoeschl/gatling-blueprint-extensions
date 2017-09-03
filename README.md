@@ -51,5 +51,7 @@ This is a rather abstract concept to identify a test scenario being executed by
 
 The [SimulationCoordinates](https://github.com/sgoeschl/gatling-blueprint-extensions/blob/master/src/main/java/org/github/sgoeschl/gatling/blueprint/extensions/SimulationCoordinates.java) are used to implement managable multi-tenant performance tests
 
+In short the `SimulationCoordinates` define a hierarchical directory tree which used to pick up various configuration files - tweaking the configuration of a complex test setup turns to providing and/or editing a configuration file.
+
 
 
