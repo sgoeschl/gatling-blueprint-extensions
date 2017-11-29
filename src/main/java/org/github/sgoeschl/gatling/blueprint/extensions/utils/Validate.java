@@ -1,5 +1,3 @@
-package org.github.sgoeschl.gatling.blueprint.extensions.utils;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -16,6 +14,7 @@ package org.github.sgoeschl.gatling.blueprint.extensions.utils;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.github.sgoeschl.gatling.blueprint.extensions.utils;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -28,31 +27,31 @@ public class Validate {
     }
 
     public static void isTrue(boolean expression, String message, Object value) {
-        if (expression == false) {
+        if (!expression) {
             throw new IllegalArgumentException(message + value);
         }
     }
 
     public static void isTrue(boolean expression, String message, long value) {
-        if (expression == false) {
+        if (!expression) {
             throw new IllegalArgumentException(message + value);
         }
     }
 
     public static void isTrue(boolean expression, String message, double value) {
-        if (expression == false) {
+        if (!expression) {
             throw new IllegalArgumentException(message + value);
         }
     }
 
     public static void isTrue(boolean expression, String message) {
-        if (expression == false) {
+        if (!expression) {
             throw new IllegalArgumentException(message);
         }
     }
 
     public static void isTrue(boolean expression) {
-        if (expression == false) {
+        if (!expression) {
             throw new IllegalArgumentException("The validated expression is false");
         }
     }
@@ -82,37 +81,37 @@ public class Validate {
     }
 
     public static void notEmpty(Collection collection, String message) {
-        if (collection == null || collection.size() == 0) {
+        if (collection == null || collection.isEmpty()) {
             throw new IllegalArgumentException(message);
         }
     }
 
     public static void notEmpty(Collection collection) {
-        if (collection == null || collection.size() == 0) {
+        if (collection == null || collection.isEmpty()) {
             throw new IllegalArgumentException("The validated collection is empty");
         }
     }
 
     public static void notEmpty(Map map, String message) {
-        if (map == null || map.size() == 0) {
+        if (map == null || map.isEmpty()) {
             throw new IllegalArgumentException(message);
         }
     }
 
     public static void notEmpty(Map map) {
-        if (map == null || map.size() == 0) {
+        if (map == null || map.isEmpty()) {
             throw new IllegalArgumentException("The validated map is empty");
         }
     }
 
     public static void notEmpty(String string, String message) {
-        if (string == null || string.length() == 0) {
+        if (string == null || string.isEmpty()) {
             throw new IllegalArgumentException(message);
         }
     }
 
     public static void notEmpty(String string) {
-        if (string == null || string.length() == 0) {
+        if (string == null || string.isEmpty()) {
             throw new IllegalArgumentException("The validated string is empty");
         }
     }
@@ -137,8 +136,8 @@ public class Validate {
 
     public static void noNullElements(Collection collection, String message) {
         Validate.notNull(collection);
-        for (Iterator it = collection.iterator(); it.hasNext(); ) {
-            if (it.next() == null) {
+        for (final Object element : collection) {
+            if (element == null) {
                 throw new IllegalArgumentException(message);
             }
         }
@@ -147,7 +146,7 @@ public class Validate {
     public static void noNullElements(Collection collection) {
         Validate.notNull(collection);
         int i = 0;
-        for (Iterator it = collection.iterator(); it.hasNext(); i++) {
+        for (final Iterator it = collection.iterator(); it.hasNext(); i++) {
             if (it.next() == null) {
                 throw new IllegalArgumentException("The validated collection contains null element at index: " + i);
             }
@@ -157,8 +156,8 @@ public class Validate {
     public static void allElementsOfType(Collection collection, Class clazz, String message) {
         Validate.notNull(collection);
         Validate.notNull(clazz);
-        for (Iterator it = collection.iterator(); it.hasNext(); ) {
-            if (clazz.isInstance(it.next()) == false) {
+        for (final Object element : collection) {
+            if (!clazz.isInstance(element)) {
                 throw new IllegalArgumentException(message);
             }
         }
@@ -168,8 +167,8 @@ public class Validate {
         Validate.notNull(collection);
         Validate.notNull(clazz);
         int i = 0;
-        for (Iterator it = collection.iterator(); it.hasNext(); i++) {
-            if (clazz.isInstance(it.next()) == false) {
+        for (final Iterator it = collection.iterator(); it.hasNext(); i++) {
+            if (!clazz.isInstance(it.next())) {
                 throw new IllegalArgumentException("The validated collection contains an element not of type "
                         + clazz.getName() + " at index: " + i);
             }
