@@ -47,7 +47,11 @@ public class EnvironmentPropertiesResolver {
         Validate.notNull(rootDirectory.exists(), "rootDirectory does not exist: " + rootDirectory);
         Validate.notNull(pathElements, "pathElements");
 
-        final Properties properties = PropertiesResolver.resolveProperties(rootDirectory, pathElements, "environment.properties");
+        final Properties properties = PropertiesResolver.resolveProperties(
+                rootDirectory,
+                pathElements,
+                "environment.properties");
+
         properties.putAll(getUserProperties());
         properties.putAll(getUserHomeGatlingProperties());
         return properties;

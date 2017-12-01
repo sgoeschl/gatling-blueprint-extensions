@@ -29,9 +29,16 @@ public class SimulationCoordinates {
     private static final int NR_OF_STRING_PARTS = 4;
     private static final String SITE_DEFAULT = "local";
 
+    /** The application under test, e.g. "copmuterdatabase" */
     private final String application;
+
+    /** The tenant used for testing, e.g. "gatling" */
     private final String tenant;
+
+    /** The staging site, e.g. "dev", "uat", "prod" */
     private final String site;
+
+    /** The scope of testing, e.g. "smoketest", "laodtest" */
     private final String scope;
 
     public static SimulationCoordinates from(Object object) {
@@ -113,11 +120,11 @@ public class SimulationCoordinates {
         return new String[] { tenant, site, application, scope };
     }
 
-    private static SimulationCoordinates from(String simulationClass, Properties properties) {
-        final String[] parts = simulationClass.split("\\.");
+    private static SimulationCoordinates from(String simulationClassName, Properties properties) {
+        final String[] parts = simulationClassName.split("\\.");
         final int length = parts.length;
 
-        Validate.isTrue(length >= NR_OF_STRING_PARTS, "Expecting at least four parts: " + simulationClass);
+        Validate.isTrue(length >= NR_OF_STRING_PARTS, "Expecting at least four parts: " + simulationClassName);
 
         final String application = parts[length - 4];
         final String tenant = parts[length - 3];
