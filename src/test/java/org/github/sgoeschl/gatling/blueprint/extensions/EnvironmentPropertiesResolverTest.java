@@ -23,6 +23,7 @@ import java.util.Properties;
 
 import static org.github.sgoeschl.gatling.blueprint.extensions.EnvironmentPropertiesResolver.resolveProperties;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class EnvironmentPropertiesResolverTest {
 
@@ -36,4 +37,12 @@ public class EnvironmentPropertiesResolverTest {
 
         assertEquals("scope", properties.getProperty("value"));
     }
+
+    @Test
+    public void shouldOverwriteWithSystemPrperties() {
+        final Properties properties = resolveProperties(ROOT_DIRECTORY, pathElements);
+
+        assertNotEquals("isnotset", properties.getProperty("java.home"));
+    }
+
 }

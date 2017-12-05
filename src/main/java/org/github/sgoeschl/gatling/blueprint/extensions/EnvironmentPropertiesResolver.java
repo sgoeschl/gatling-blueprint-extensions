@@ -27,16 +27,20 @@ import java.util.Properties;
  * <ul>
  * <li>./user.properties</li>
  * <li>~/.gatling.properties</li>
+ * <li>System#properties</li>
  * </ul>
  * <br>
- * This allows to overwrite configured values on an ad-hoc base (user.properties)
- * or permanently, e.g. to provide machine-specific proxy settings.
+ * This allows to overwrite configured values on an ad-hoc base
+ * (user.properties, system properties)or permanently, e.g. to
+ * provide machine-specific proxy settings.
  */
 public class EnvironmentPropertiesResolver {
 
+    private static final String ENVIRONMENT_PROPERTIES = "environment.properties";
     private static final String USER_PROPERTIES = "user.properties";
     private static final String GATLING_PROPERTIES = ".gatling.properties";
     private static final Properties EMPTY_PROPERTIES = new Properties();
+    private static final String SIMULATION_PROPERTY_KEY_PREFIX = "simulation.";
 
     public static Properties resolveProperties(File rootDirectory, SimulationCoordinates simulationCoordinates) {
         return resolveProperties(rootDirectory, simulationCoordinates.getPathElements());
@@ -50,11 +54,12 @@ public class EnvironmentPropertiesResolver {
         final Properties properties = PropertiesResolver.resolveProperties(
                 rootDirectory,
                 pathElements,
-                "environment.properties");
+                ENVIRONMENT_PROPERTIES);
 
         properties.putAll(getUserProperties());
         properties.putAll(getUserHomeGatlingProperties());
-        return properties;
+
+        return overwriteWithSystemPropertyValues(properties);
     }
 
     private static Properties getUserProperties() {
@@ -68,6 +73,24 @@ public class EnvironmentPropertiesResolver {
             return file.exists() ? PropertiesResolver.load(file) : EMPTY_PROPERTIES;
         }
         return EMPTY_PROPERTIES;
+    }
+
+    private static Properties overwriteWithSystemPropertyValues(Properties properties) {
+        final Properties systemProperties = System.getProperties();
+
+        // copy values from system properties if a matching key is found
+        for (String name : properties.stringPropertyNames()) {
+            if (systemProperties.containsKey(name)) {
+                properties.put(name, systemProperties.getProperty(name));
+            }
+        }
+
+        // copy all properties starting with "simulation."
+        systemProperties.stringPropertyNames().stream()
+                .filter(name -> name.startsWith(SIMULATION_PROPERTY_KEY_PREFIX))
+                .forEach(name -> properties.setProperty(name, systemProperties.getProperty(name)));
+
+        return properties;
     }
 
     private static String getUserHomeDirectory() {
