@@ -87,6 +87,10 @@ public class SimulationCoordinates {
         return getApplication() + "-" + getTenant() + "-" + getSite() + "-" + getScope();
     }
 
+    public String[] getPathElements() {
+        return new String[] { tenant, site, application, scope };
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -115,10 +119,6 @@ public class SimulationCoordinates {
     @Override
     public int hashCode() {
         return Objects.hash(application, tenant, site, scope);
-    }
-
-    public String[] getPathElements() {
-        return new String[] { tenant, site, application, scope };
     }
 
     private static SimulationCoordinates from(String simulationClassName, Properties properties) {

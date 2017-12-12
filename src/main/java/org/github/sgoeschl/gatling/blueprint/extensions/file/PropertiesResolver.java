@@ -28,6 +28,15 @@ import static org.github.sgoeschl.gatling.blueprint.extensions.file.Hierarchical
 
 public class PropertiesResolver {
 
+    /**
+     * Search for property files along the given file hierarchy and load them
+     * in the correct order.
+     *
+     * @param rootDirectory    root directory to stop the search
+     * @param pathElements     the path elements relative to the root directory
+     * @param propertyFileName name of the property file to searxh
+     * @return merged properties
+     */
     public static Properties resolveProperties(File rootDirectory, String[] pathElements, String propertyFileName) {
         final Properties result = new Properties();
         final List<File> propertyFiles = locateFile(rootDirectory, pathElements, propertyFileName);

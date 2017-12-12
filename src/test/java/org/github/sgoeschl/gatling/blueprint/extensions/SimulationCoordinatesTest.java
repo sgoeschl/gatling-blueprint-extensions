@@ -19,11 +19,13 @@ package org.github.sgoeschl.gatling.blueprint.extensions;
 import org.junit.Test;
 
 import static org.github.sgoeschl.gatling.blueprint.extensions.SimulationCoordinates.from;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public class SimulationCoordinatesTest {
 
     private static final String SIMULATION_CLASS_NAME = "application.tenant.scenario.Test";
+    private static final String[] PATH_ELEMENTS = new String[] { "tenant", "local", "application", "scenario" };
 
     private final SimulationCoordinates simulationCoordinates = new SimulationCoordinates("application", "tenant", "local", "scenario");
 
@@ -46,6 +48,11 @@ public class SimulationCoordinatesTest {
     public void shouldConvertToString() {
         assertEquals("{application='application', tenant='tenant', site='local', scope='scenario'}",
                 from(SIMULATION_CLASS_NAME).toString());
+    }
+
+    @Test
+    public void shouldGetPathElementsFromClassName() {
+        assertArrayEquals(PATH_ELEMENTS, from(SIMULATION_CLASS_NAME).getPathElements());
     }
 
 
