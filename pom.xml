@@ -28,9 +28,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/sgoeschl/gatling-blueprint-extensions.git</connection>
-        <developerConnection>scm:git:ssh://github.com:sgoeschl/gatling-blueprint-extensions.git</developerConnection>
         <url>https://github.com/sgoeschl/gatling-blueprint-extensions</url>
+        <connection>scm:git:git://github.com/sgoeschl/gatling-blueprint-extensions.git</connection>
+        <developerConnection>scm:git:git@github.com:sgoeschl/gatling-blueprint-extensions.git</developerConnection>
     </scm>
 
     <distributionManagement>
