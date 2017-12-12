@@ -1,5 +1,8 @@
 # Introduction
 
+Thanks to Travis for the [build status](https://travis-ci.org/sgoeschl/gatling-blueprint-extensions): 
+[![Build Status](https://travis-ci.org/sgoeschl/gatling-blueprint-extensions.svg?branch=master)](https://travis-ci.org/sgoeschl/gatling-blueprint-extensions)
+
 This project contains some utility methods I found useful for Gatling projects
 
 * Pretty-Printing Boon JSON objects
