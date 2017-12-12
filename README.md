@@ -1,7 +1,7 @@
-# Introduction
+Gatling Blueprint Extensions [![Build status](https://travis-ci.org/sgoeschl/gatling-blueprint-extensions.svg?branch=master)](https://travis-ci.org/sgoeschl/gatling-blueprint-extensions) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.sgoeschl.gatling/gatling-blueprint-extensions/badge.svg)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22gatling-blueprint-extensions%22)
+=====
 
-Thanks to Travis for the [build status](https://travis-ci.org/sgoeschl/gatling-blueprint-extensions): 
-[![Build Status](https://travis-ci.org/sgoeschl/gatling-blueprint-extensions.svg?branch=master)](https://travis-ci.org/sgoeschl/gatling-blueprint-extensions)
+## Introduction
 
 This project contains some utility methods I found useful for Gatling projects
 
@@ -10,7 +10,7 @@ This project contains some utility methods I found useful for Gatling projects
 * Simulation coordinates
 
 
-# Pretty-Printing Boon JSON Objects
+## Pretty-Printing Boon JSON Objects
 
 Since I'm using Gatling also for functional testing some JSON handling would be extremly helpful
 
@@ -33,7 +33,7 @@ FilteringJsonPrettyPrinter.print(departmentJson, "employees");
 Please note that removing of JSON elements do not use JSON path expression - that would be awesone but difficult to implement.
 
 
-# Hierarchical Directory Search
+## Hierarchical Directory Search
 
 A common pattern to configure test scenarios is to pick up configuration files along a directory tree - you start at a leaf directory and walk up until you hit the configured root directory
 
@@ -43,7 +43,7 @@ A common pattern to configure test scenarios is to pick up configuration files a
 This is implemented by [HierarchicalFileLocator](https://github.com/sgoeschl/gatling-blueprint-extensions/blob/master/src/main/java/org/github/sgoeschl/gatling/blueprint/extensions/file/HierarchicalFileLocator.java) and [PropertiesResolver](https://github.com/sgoeschl/gatling-blueprint-extensions/blob/master/src/main/java/org/github/sgoeschl/gatling/blueprint/extensions/file/HierarchicalFileLocator.java).
 
 
-# Simulation Coordinates
+## Simulation Coordinates
 
 This is a rather abstract concept to identify a test scenario being executed by
 
@@ -55,6 +55,3 @@ This is a rather abstract concept to identify a test scenario being executed by
 The [SimulationCoordinates](https://github.com/sgoeschl/gatling-blueprint-extensions/blob/master/src/main/java/org/github/sgoeschl/gatling/blueprint/extensions/SimulationCoordinates.java) are used to implement managable multi-tenant performance tests
 
 In short the `SimulationCoordinates` define a hierarchical directory tree which used to pick up various configuration files - tweaking the configuration of a complex test setup turns to providing and/or editing a configuration file.
-
-
-
